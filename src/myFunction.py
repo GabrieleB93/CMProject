@@ -9,7 +9,7 @@ class myFunction():
     # fucntion that calculate f(x) and grad(x)
     def calculate(self, x):
         # f(x) = x'Qx / x'x
-        f_x = np.matmul(np.matmul(np.transpose(x), self.Q), x)/np.matmul(np.transpose(x), x)
-        # grad(x) = 
-        gradx = np.matmul()# da scrivere
-        return f_x, gradx
+        xTx = np.matmul(np.transpose(x), x)
+        f_x = np.matmul(np.matmul(np.transpose(x), self.Q), x)/xTx
+        nabla_f = (2*x*f_x)/xTx - (np.matmul(2*self.Q, x))/xTx 
+        return f_x, nabla_f
