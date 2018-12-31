@@ -9,11 +9,11 @@ class GradDescent:
         self.mina = 1e-16
         self.sfgrd = 0.01
         self.eps = 1e-6
-        n = nabla.shape[1]
-
-        #Temporane0
+        
+        #Temporanei
         self.q = q
-
+        n = nabla.shape[1]
+        
         tmp = MyFunction(matrix)
         self.fStar, tmp1, tmp2 = tmp.calculate(np.matrix(''), self.q)
         self.v = function
@@ -26,24 +26,21 @@ class GradDescent:
         print self.fStar
         print self.g
 
-
         # Variabili globali
 
         self.lastx = zeros((n, 1))  # last point visited in the line search
         self.lastg = zeros((n, 1))  # gradient of lastx
         self.feval = 1  # f() evaluations count ("common" with LSs)
 
+        # Inizializzazione
+        
         print 'Gradient Method \n'
         if self.fStar > - float("inf"):
             print 'feval\trel gap\t\t|| g(x) ||\trate\t\tls feval\ta*'
             self.prevv = - float("inf")
         else:
             print 'feval\tf(x)\t\t\t|| g(x) ||'
-        # print '\tls feval\ta*'
         print '\n\n'
-
-        # f = MyFunction(self.A)
-        # self.v, self.g = f.calculate(self.x, np.matrix('10;5'))
 
         self.ng = linalg.norm(self.x)
 
