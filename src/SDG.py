@@ -1,7 +1,7 @@
 from numpy import *
 from myFunction import *
 
-
+#Leggere changelog
 class GradDescent:
 
     def __init__(self, function, nabla, x, matrix, q):
