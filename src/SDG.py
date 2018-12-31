@@ -2,29 +2,26 @@ from numpy import *
 from myFunction import *
 
 #Leggere changelog
-class GradDescent:
+class GradDescent():
 
-    def __init__(self, function, nabla, x, matrix, q):
+    def __init__(self, function, x = None):
 
         self.mina = 1e-16
         self.sfgrd = 0.01
         self.eps = 1e-6
-        
-        #Temporanei
-        self.q = q
-        n = nabla.shape[1]
-        
-        tmp = MyFunction(matrix)
-        self.fStar, tmp1, tmp2 = tmp.calculate(np.matrix(''), self.q)
-        self.v = function
+        self.MaxFeval = 1000
+        self.MInf = - float("inf")
+        self.function = function
+        '''
         self.g = nabla
         self.x = x
         self.A = matrix
 
-        print self.x
-        print self.v
-        print self.fStar
-        print self.g
+        print(self.x)
+        print(self.v)
+        print(self.fStar)
+        print(self.g)
+        '''
 
         # Variabili globali
 
@@ -34,42 +31,69 @@ class GradDescent:
 
         # Inizializzazione
         
-        print 'Gradient Method \n'
+        print('Gradient Method \n')
+        '''
         if self.fStar > - float("inf"):
-            print 'feval\trel gap\t\t|| g(x) ||\trate\t\tls feval\ta*'
+            print('feval\trel gap\t\t|| g(x) ||\trate\t\tls feval\ta*')
             self.prevv = - float("inf")
         else:
-            print 'feval\tf(x)\t\t\t|| g(x) ||'
-        print '\n\n'
-
-        self.ng = linalg.norm(self.x)
-
+            print('feval\tf(x)\t\t\t|| g(x) ||')
+        print('\n\n')
+        '''
+        self.x = x if x !=None else self.init_x()
+        self.v, self.g = function.calculate(x)
+        self.ng = linalg.norm(self.g)
+        
         if self.eps < 0:
             self.ng0 = - self.ng
         else:
             self.ng0 = 1
+        
 
     def SDGLoop(self):
 
         while True:
+            self.print()
+            if self.ng <= self.eps * self.ng0:
+                self.status = 'optimal'
+                break
+
+            if self.feval > self.MaxFeval:
+                self.status = 'stopped'
+                break
+            # calculate step along direction
+            alpha = self.function.stepsize()
+            if alpha <= self.mina:
+                self.status = 'error'
+                break
+            self.x = self.x - alpha * self.g
+            self.v, self.g = self.function(self.x)
+            self.feval = self.feval + 1
+            if self.v <= self.MInf:
+                self.status = 'unbounded'
+                break
+            self.ng = linalg.norm(self.g)
+
+            '''
             if self.fStar > - float("inf"):
 
-                print str(self.feval) + '\t' + str((self.v - self.fStar) / np.maximum(abs(self.fStar), 1)) + '\t' + str(
-                    self.ng),
+                print(str(self.feval) + '\t' + str((self.v - self.fStar) / np.maximum(abs(self.fStar), 1)) + '\t' + str(self.ng),)
 
                 if self.prevv < float("inf"):
-                    print '\t' + str((self.v - self.fStar) / (self.prevv - self.fStar)),
+                    print('\t' + str((self.v - self.fStar) / (self.prevv - self.fStar)),)
                 else:
-                    print '\t\t',
+                    print('\t\t',)
 
                 self.prevv = self.v
             else:
-                print 'ci entro'
-                print  str(self.feval) + '\t' + str(self.v) + '\t\t' + str(self.ng),
+                print('ci entro')
+                print(str(self.feval) + '\t' + str(self.v) + '\t\t' + str(self.ng),)
 
             if self.ng <= self.eps * self.ng0:
-                status = 'optimal'
+                self.status = 'optimal'
                 break
+
+            
 
             MaxFeval = 1000
             m1 = 0.01
@@ -79,34 +103,41 @@ class GradDescent:
             MInf = - float("inf")
 
             if self.feval > MaxFeval:
-                status = 'stopped'
+                self.status = 'stopped'
                 break
+            
+
 
             # compute step size
 
             phip0 = - self.ng * self.ng
-            a , self.v = self.ArmijoWolfesLS(self.v, phip0, astart, m1, m2, tau)
+            # a , self.v = self.ArmijoWolfesLS(self.v, phip0, astart, m1, m2, tau)
 
             # output statistics
 
-            print '\t' + str(a),
-            print '\n'
+            print('\t' + str(a),)
+            print('\n')
 
             if a <= self.mina:
-                status = 'error'
+                self.status = 'error'
                 break
 
             if self.v <= MInf:
-                status = 'unbounded'
+                self.status = 'unbounded'
                 break
 
             self.x = self.lastx
 
             self.g = self.lastg
             self.ng = linalg.norm(self.g)
+            '''
 
-        print '\nRisultato = ' + str(self.x)
+        print('\nRisultato = ' + str(self.x))
 
+    def print(self):
+        print("Iterations number %d, f(x) = %0.4f, gradientNorm = %0.4f"%(self.feval, self.v, self.ng))
+
+    # cool but we should not use it I guess
     def ArmijoWolfesLS(self, phi0, phip0, as_, m1, m2, tau):
 
         global phia
@@ -127,7 +158,7 @@ class GradDescent:
             as_ = as_ / tau
             lister = lister + 1
 
-        print lister
+        print(lister)
         lister = 1  # count iteration of second phase
 
         am = 0
@@ -156,14 +187,13 @@ class GradDescent:
             self.phips = phip
 
             lister = lister + 1
-        print 'lister', lister
+        print('lister', lister)
         return a, phia
 
     def f2phi(self, alpha):
 
         self.lastx = self.x - alpha * self.g
-        f = MyFunction(self.A)
-        phi, self.lastg, tmp3 = f.calculate(self.lastx,self.q)
+        phi, self.lastg, tmp3 = function.calculate(self.lastx)
         phip = - self.g.conj().transpose() * self.lastg
         self.feval = self.feval + 1
 
