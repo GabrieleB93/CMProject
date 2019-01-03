@@ -8,7 +8,6 @@ class conjugateGradient():
         self.feval = 1
         self.x = x if x != None else self.function.init_x()
         self.v, self.g = function.calculate(self.x)
-        self.g = -self.g
         self.ng = LA.norm(self.g)
         self.pOld = -1
         self.p = -self.g
@@ -34,7 +33,9 @@ class conjugateGradient():
                 break
 
             # calculate step along direction
-            alpha = self.function.conjugateGradientStepsize(self.p)
+            # -direction because model calculate the derivative of 
+            # phi' = f'(x-aplha*d)
+            alpha = self.function.conjugateGradientStepsize(-self.p)
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
@@ -42,10 +43,9 @@ class conjugateGradient():
 
             self.oldgTg  = self.gTg
             ###########
-            self.x = self.x + alpha * self.g
+            self.x = self.x + alpha * self.p
             ###########
             self.v, self.g = self.function.calculate(self.x)
-            self.g = -self.g
             self.feval = self.feval + 1
             self.gTg = np.matmul(self.g.T, self.g)
             self.B = self.gTg/self.oldgTg
