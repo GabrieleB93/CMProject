@@ -25,6 +25,7 @@ class conjugateGradient():
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
+                return self.v
                 break
 
             # Man number of iteration?
@@ -40,6 +41,7 @@ class conjugateGradient():
             if alpha <= conf.mina:
                 self.status = 'error'
                 break
+            
 
             self.oldgTg  = self.gTg
             ###########

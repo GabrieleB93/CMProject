@@ -22,6 +22,7 @@ class gradDescent():
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
+                return self.v
                 break
 
             # Man number of iteration?
