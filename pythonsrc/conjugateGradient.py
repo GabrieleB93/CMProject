@@ -1,6 +1,7 @@
 from numpy import linalg as LA
 import numpy as np
 import conf
+import matplotlib.pyplot as plt
 
 class conjugateGradient():
     def __init__(self, function, x = None):
@@ -19,14 +20,18 @@ class conjugateGradient():
         else:
             self.ng0 = 1
 
-    def ConjugateGradient(self):
+    def ConjugateGradient(self, indx):
+
+        if(indx!=None):
+            if (indx > 3):
+                plot = plt.subplot(4, 3, indx)
+
         while True:
             self.print()
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                return self.v
-                break
+                return self.v, self.feval
 
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
@@ -45,6 +50,7 @@ class conjugateGradient():
 
             self.oldgTg  = self.gTg
             ###########
+            lastx = self.x
             self.x = self.x + alpha * self.p
             ###########
             self.v, self.g = self.function.calculate(self.x)
@@ -53,7 +59,13 @@ class conjugateGradient():
             self.B = self.gTg/self.oldgTg
             self.pOld = self.p
             self.p = -self.g + ((self.pOld)*self.B)
-            
+
+            if (indx != None):
+                if (indx > 3):
+                    plot.plot([self.x.item(0), lastx.item(0)], [self.x.item(1), lastx.item(1)], 'o-')
+            else:
+                plt.plot([self.x.item(0), lastx.item(0)], [self.x.item(1), lastx.item(1)], 'o-')
+
 
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
