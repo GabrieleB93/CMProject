@@ -4,10 +4,12 @@ import conf
 import matplotlib.pyplot as plt
 
 
-class gradDescent():
+class steepestGradientDescent():
     def __init__(self, function, x=None):
         self.function = function
         self.feval = 1
+        self.historyNorm = []
+        self.historyValue = []
         self.x = x if x != None else self.function.init_x()
         self.v, self.g = function.calculate(self.x)
         self.ng = LA.norm(self.g)
@@ -17,24 +19,23 @@ class gradDescent():
         else:
             self.ng0 = 1
 
-    def SDG(self, indx=None):
-
-        if(indx!=None):
-            if (indx > 3):
-                plot = plt.subplot(4, 3, indx)
-
+    def steepestGradientDescent(self):
         while True:
+            self.historyNorm.append(np.asscalar(self.ng))
+            self.historyValue.append(np.asscalar(self.v))
             self.print() #Non sarebbe più corretto spostarlo dopo l' IF? Perchè attualmente
             # viene segnata un'iterazione in più, o no?
 
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                return self.v, self.feval
+                print(self.status)
+                return self.historyNorm, self.historyValue
                 # break
 
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
+                print(self.status)
                 self.status = 'stopped'
                 break
 
@@ -44,6 +45,7 @@ class gradDescent():
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
+                print(self.status)
                 break
 
             lastx = self.x
@@ -51,15 +53,9 @@ class gradDescent():
             self.v, self.g = self.function.calculate(self.x)
             self.feval = self.feval + 1
 
-            # Per il plot da P1(x,y) a P2(x,y)
-            if(indx!=None):
-                if (indx > 3):
-                    plot.plot([self.x.item(0), lastx.item(0)], [self.x.item(1), lastx.item(1)], 'o-')
-            else:
-                plt.plot([self.x.item(0), lastx.item(0)], [self.x.item(1), lastx.item(1)], 'o-')
-
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
+                print(self.status)
                 break
             self.ng = LA.norm(self.g)
 
@@ -67,3 +63,38 @@ class gradDescent():
 
     def print(self):
         print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f" % (self.feval, self.v, self.ng))
+
+
+    def steepestGradientDescentTIME(self):
+        start = time.time()
+        while True:
+            if self.ng <= conf.eps * self.ng0:
+                self.status = 'optimal'
+                return self.ng, self.v, time.time()-start
+
+            if self.feval > conf.MaxFeval:
+                print(self.status)
+                self.status = 'stopped'
+                break
+
+            alpha = self.function.stepsize()
+
+            # step too short
+            if alpha <= conf.mina:
+                self.status = 'error'
+                print(self.status)
+                break
+
+            lastx = self.x
+            self.x = self.x - alpha * self.g
+            self.v, self.g = self.function.calculate(self.x)
+            self.feval = self.feval + 1
+
+            if self.v <= conf.MInf:
+                self.status = 'unbounded'
+                print(self.status)
+                break
+                
+            self.ng = LA.norm(self.g)
+
+        print('\n x = ' + str(self.x)+'\nvalue = %0.4f' %self.v)
