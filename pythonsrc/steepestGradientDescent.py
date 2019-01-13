@@ -73,10 +73,10 @@ class steepestGradientDescent():
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
                 return self.ng, self.v
-                
+
             if self.feval > conf.MaxFeval:
-                print(self.status)
                 self.status = 'stopped'
+                print(self.status)
                 break
 
             alpha = self.function.stepsize()
@@ -98,5 +98,4 @@ class steepestGradientDescent():
                 break
                 
             self.ng = LA.norm(self.g)
-
-        print('\n x = ' + str(self.x)+'\nvalue = %0.4f' %self.v)
+        return self.ng, self.v

@@ -104,3 +104,4 @@ class conjugateGradient():
                 self.status = 'unbounded'
                 break
             self.ng = LA.norm(self.g)
+        return self.ng, self.v
