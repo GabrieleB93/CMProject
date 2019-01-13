@@ -50,8 +50,6 @@ class normFunction():
             return roots[1]
         elif roots[1] < 0:
             return roots[0]
-        print("WUT?")
-        print(roots)
         # non credo succeda mai, perchè vorrebbe dire che ci sono due zeri nella nostra derivata 
         # lungo quella direzione che è una funzione con due punti stazionari da li in avanti
         # quindi \_/^\ va a meno infinito ( più perchè cerchiamo il massimo)
@@ -82,11 +80,6 @@ class normFunction():
             return roots[1]
         elif roots[1] < 0:
             return roots[0]
-        print("WUT?")
-        print(roots)
-        # non credo succeda mai, perchè vorrebbe dire che ci sono due zeri nella nostra derivata 
-        # lungo quella direzione che è una funzione con due punti stazionari da li in avanti
-        # quindi \_/^\ va a meno infinito ( più perchè cerchiamo il massimo)
         return np.min([roots])
 
     def init_x(self):

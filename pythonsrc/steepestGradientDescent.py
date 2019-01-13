@@ -2,14 +2,13 @@ from numpy import linalg as LA
 import numpy as np
 import conf
 import matplotlib.pyplot as plt
+import time
 
 
 class steepestGradientDescent():
     def __init__(self, function, x=None):
         self.function = function
         self.feval = 1
-        self.historyNorm = []
-        self.historyValue = []
         self.x = x if x != None else self.function.init_x()
         self.v, self.g = function.calculate(self.x)
         self.ng = LA.norm(self.g)
@@ -20,6 +19,8 @@ class steepestGradientDescent():
             self.ng0 = 1
 
     def steepestGradientDescent(self):
+        self.historyNorm = []
+        self.historyValue = []
         while True:
             self.historyNorm.append(np.asscalar(self.ng))
             self.historyValue.append(np.asscalar(self.v))
@@ -65,13 +66,14 @@ class steepestGradientDescent():
         print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f" % (self.feval, self.v, self.ng))
 
 
+    # same function as the previus one but it returns also the time and 
+    # we avoid print and other operation which slow down the algorithm
     def steepestGradientDescentTIME(self):
-        start = time.time()
         while True:
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                return self.ng, self.v, time.time()-start
-
+                return self.ng, self.v
+                
             if self.feval > conf.MaxFeval:
                 print(self.status)
                 self.status = 'stopped'
