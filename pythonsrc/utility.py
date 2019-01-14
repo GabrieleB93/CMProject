@@ -93,6 +93,7 @@ def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=Non
 
 
 def savePlot(type, num, fig):
+
     directory = "../Plot/"
     if num == "0":
         file = "AVG" + type + num + ".png"
