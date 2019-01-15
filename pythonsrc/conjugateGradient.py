@@ -8,7 +8,7 @@ class conjugateGradient():
     def __init__(self, function, x = None):
         self.function = function
         self.feval = 1
-        self.x = x if x != None else self.function.init_x()
+        self.x = x if x is not None else self.function.init_x()
         self.v, self.g = function.calculate(self.x)
         self.ng = LA.norm(self.g)
         self.pOld = -1
@@ -36,7 +36,8 @@ class conjugateGradient():
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
                 self.status = 'stopped'
-                break
+                return self.historyNorm, self.historyValue
+                # break
 
             # calculate step along direction
             # -direction because model calculate the derivative of 
@@ -45,7 +46,8 @@ class conjugateGradient():
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
-                break
+                return self.historyNorm, self.historyValue
+                # break
             
 
             self.oldgTg  = self.gTg
@@ -62,7 +64,9 @@ class conjugateGradient():
 
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
-                break
+                return self.historyNorm, self.historyValue
+                # break
+
             self.ng = LA.norm(self.g)
 
     def print(self):
