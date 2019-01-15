@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import time
 
 class conjugateGradient():
-    def __init__(self, function, x = None):
+    def __init__(self, function, x = None, verbose = True):
+        self.verbose = verbose
         self.function = function
         self.feval = 1
         self.x = x if x is not None else self.function.init_x()
@@ -27,7 +28,8 @@ class conjugateGradient():
         while True:
             self.historyNorm.append(np.asscalar(self.ng))
             self.historyValue.append(np.asscalar(self.v))
-            self.print()
+            if self.verbose:
+                self.print()
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
@@ -77,7 +79,7 @@ class conjugateGradient():
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                return self.ng, self.v
+                return np.asscalar(self.ng), np.asscalar(self.v)
 
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
@@ -108,4 +110,5 @@ class conjugateGradient():
                 self.status = 'unbounded'
                 break
             self.ng = LA.norm(self.g)
-        return self.ng, self.v
+
+        return np.asscalar(self.ng), np.asscalar(self.v)

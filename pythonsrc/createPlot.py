@@ -1,5 +1,5 @@
 import normFunction as nf
-import gradientDescent as GD
+import steepestGradientDescent as GD
 import numpy as np
 from numpy import linalg as LA
 import matplotlib.pyplot as plt
@@ -19,10 +19,10 @@ def main():
 
         A = readMatrix('F',i+1)
         f = nf.normFunction(A)
-        optimizer = GD.gradDescent(f)
+        optimizer = GD.steepestGradientDescent(f)
 
         time_start = time.perf_counter()
-        norm1, iterations = optimizer.SDG()
+        norm1, iterations = optimizer.steepestGradientDescent()
         time_elapsed = (time.perf_counter() - time_start)
 
         if(i!=0):

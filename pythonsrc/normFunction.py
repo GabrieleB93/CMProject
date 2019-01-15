@@ -44,8 +44,7 @@ class normFunction():
         coef = np.array([a, b, c])
         roots = np.roots(coef)
         if roots[0] < 0 and roots[1] < 0:
-            print("Error occurred, it shoulden't happen")
-            return False
+            return 0
         elif roots[0] < 0:
             return roots[1]
         elif roots[1] < 0:
@@ -74,8 +73,7 @@ class normFunction():
         coef = np.array([a, b, c])
         roots = np.roots(coef)
         if roots[0] < 0 and roots[1] < 0:
-            print("Error occurred, it shoulden't happen")
-            return False
+            return 0
         elif roots[0] < 0:
             return roots[1]
         elif roots[1] < 0:

@@ -1,6 +1,7 @@
 import steepestGradientDescent as SGD
 import conjugateGradient as CG
 import numpy as np
+import pandas as pd
 import normFunction as nf
 import matplotlib.pyplot as plt
 import os
@@ -8,9 +9,12 @@ import os
 
 def readMatrix(type, number):
     raw = []
-    with open('../Matrices/Matrix' + type + '/matrix' + type + str(number) + '.txt', 'r') as f:
-        for line in f:
-            raw.append(line.split())
+    try:
+        f = open('../Matrices/Matrix' + type + '/matrix' + type + str(number) + '.txt', 'r') 
+    except:
+        f = open('Matrices/Matrix' + type + '/matrix' + type + str(number) + '.txt', 'r') 
+    for line in f:
+        raw.append(line.split())
     A = np.array(raw, dtype=float)
     return A
 
@@ -102,3 +106,9 @@ def savePlot(type, num, fig):
     if not os.path.exists(directory):
         os.makedirs(directory)
     fig.savefig(directory + file)
+
+def fromCSVToLatexTable():
+    df = pd.read_csv("CSVresult/MAtrixStat.csv")
+    a = df.values
+    a = a[:, 1:]
+    np.savetxt("CSVresult/mydata.csv", a, delimiter=' & ', fmt='%2.2e', newline=' \\\\\n')
