@@ -59,40 +59,45 @@ def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=Non
     yLabel3 = 'Norms Gradient'
     xLabel1 = 'Iterations'
 
-    fig, [errPlot, relErrPlot, gradPlot] = plt.subplots(3, 2, sharex=False, sharey=False)
+    fig, [relErrPlot, gradPlot] = plt.subplots(2, 2, sharex=False, sharey=True)
     fig.set_size_inches(18.5, 10.5)
     m, n = np.shape(A)
 
-    errPlot[0].set_title(
+    relErrPlot[0].set_title(
         'Steepest Gradient Descent \n Type ' + type + '     Density =  ' + str(density(type)) + '    M = ' + str(
             m) + ' N = ' + str(n))
-    errPlot[0].set(ylabel=yLabel1)
-    errPlot[0].set_yscale('log')
-    errPlot[0].plot(errorsSGD)
+    # errPlot[0].set(ylabel=yLabel1)
+    # errPlot[0].set_yscale('log')
+    # errPlot[0].plot(errorsSGD)
 
-    relErrPlot[0].plot(relerrorsSGD)
     relErrPlot[0].set_yscale('log')
     relErrPlot[0].set(ylabel=yLabel2)
+    for relSGD in relerrorsSGD:
+        relErrPlot[0].plot(relSGD)
 
     gradPlot[0].set(ylabel=yLabel3)
     gradPlot[0].set(xlabel=xLabel1)
     gradPlot[0].set_yscale('log')
-    gradPlot[0].plot(gradientsSGD)
 
-    errPlot[1].set_title(
+    for gradSGD in gradientsSGD:
+        gradPlot[0].plot(gradSGD)
+
+    relErrPlot[1].set_title(
         'Conjugate Gradient \n Type ' + type + '     Density =  ' + str(density(type)) + '    M = ' + str(
             m) + ' N = ' + str(n))
-    errPlot[1].set_yscale('log')
-    errPlot[1].plot(errorsCG, "C1")
+    # errPlot[1].set_yscale('log')
+    # errPlot[1].plot(errorsCG, "C1")
 
-    relErrPlot[1].plot(relerrorsCG, 'C1')
     relErrPlot[1].set_yscale('log')
+    for relCG in relerrorsCG:
+        relErrPlot[1].plot(relCG)
 
     gradPlot[1].set(xlabel=xLabel1)
     gradPlot[1].set_yscale('log')
-    gradPlot[1].plot(gradientsCG, 'C1')
-    plt.show()
+    for gradCG in gradientsCG:
+        gradPlot[1].plot(gradCG)
 
+    plt.show()
     savePlot(type, num, fig)
 
 
