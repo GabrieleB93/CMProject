@@ -49,7 +49,7 @@ def density(type):
     elif type == 'G':
         return 0.25
     elif type == 'H':
-        return 'Random'
+        return '0.01'
 
 
 def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=None, relerrorsCG=None, gradientsCG=None,
