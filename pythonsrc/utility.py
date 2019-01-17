@@ -53,50 +53,53 @@ def density(type):
 
 
 def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=None, relerrorsCG=None, gradientsCG=None,
-              A=None, type=None, num=None):
-    yLabel1 = 'Absolute Error'
+              A=None, type=None, num=None, ):
+
     yLabel2 = 'Relative Error'
     yLabel3 = 'Norms Gradient'
     xLabel1 = 'Iterations'
 
-    fig, [relErrPlot, gradPlot] = plt.subplots(2, 2, sharex=False, sharey=True)
+    fig = plt.figure()
+    relErrPlotSGD = fig.add_subplot(2,2,1 )
+    relErrPlotCG = fig.add_subplot(2,2,2,sharey = relErrPlotSGD)
+    gradPlotSGD= fig.add_subplot(2,2,3)
+    gradPlotCG= fig.add_subplot(2,2,4,sharey = gradPlotSGD)
+
     fig.set_size_inches(18.5, 10.5)
     m, n = np.shape(A)
 
-    relErrPlot[0].set_title(
+    plt.ylim(10e-16,10e0 )
+    relErrPlotSGD.set_title(
         'Steepest Gradient Descent \n Type ' + type + '     Density =  ' + str(density(type)) + '    M = ' + str(
             m) + ' N = ' + str(n))
-    # errPlot[0].set(ylabel=yLabel1)
-    # errPlot[0].set_yscale('log')
-    # errPlot[0].plot(errorsSGD)
 
-    relErrPlot[0].set_yscale('log')
-    relErrPlot[0].set(ylabel=yLabel2)
+    relErrPlotSGD.set_yscale('log')
+    relErrPlotSGD.set(ylabel=yLabel2)
     for relSGD in relerrorsSGD:
-        relErrPlot[0].plot(relSGD)
+        relErrPlotSGD.plot(relSGD)
 
-    gradPlot[0].set(ylabel=yLabel3)
-    gradPlot[0].set(xlabel=xLabel1)
-    gradPlot[0].set_yscale('log')
+    gradPlotSGD.set(ylabel=yLabel3)
+    gradPlotSGD.set(xlabel=xLabel1)
+    gradPlotSGD.set_yscale('log')
 
-    for gradSGD in gradientsSGD:
-        gradPlot[0].plot(gradSGD)
 
-    relErrPlot[1].set_title(
+    relErrPlotCG.set_title(
         'Conjugate Gradient \n Type ' + type + '     Density =  ' + str(density(type)) + '    M = ' + str(
             m) + ' N = ' + str(n))
-    # errPlot[1].set_yscale('log')
-    # errPlot[1].plot(errorsCG, "C1")
 
-    relErrPlot[1].set_yscale('log')
+    relErrPlotCG.set_yscale('log')
     for relCG in relerrorsCG:
-        relErrPlot[1].plot(relCG)
+        relErrPlotCG.plot(relCG)
 
-    gradPlot[1].set(xlabel=xLabel1)
-    gradPlot[1].set_yscale('log')
+    gradPlotCG.set(xlabel=xLabel1)
+    gradPlotCG.set_yscale('log')
+
+    plt.ylim(10e-10,10e5 )
+
     for gradCG in gradientsCG:
-        gradPlot[1].plot(gradCG)
-
+        gradPlotCG.plot(gradCG)
+    for gradSGD in gradientsSGD:
+        gradPlotSGD.plot(gradSGD)
     plt.show()
     savePlot(type, num, fig)
 
