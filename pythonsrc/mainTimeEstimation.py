@@ -48,8 +48,10 @@ def main():
         errorSGD = [max(err, 1e-20) for err in errorSGD]
         errorSGD = np.array(errorSGD)
         errorCG = np.array(errorCG)
-        print("Conjugate gradient time %.6f \nSteepest gradient descent average time %.6f \nNumpy ninealog average time %.6f" %(np.mean(CGtimes),np.mean(SGDtimes),np.mean(numpytimes)))
-        print("Error conjugate gradient = %.6f" % np.mean(np.log10(errorCG)))
+        print("Conjugate gradient time %.6f" %(np.mean(CGtimes)))
+        print("Steepest gradient descent average time %.6f" %(np.mean(SGDtimes)))
+        print(" Numpy ninealog average time %.6f" %(np.mean(numpytimes)))
+        print("Error conjugate gradient = %.6f" % (np.mean(np.log10(errorCG))))
         print("Error steppest descent direct6ion = %.6f" %np.mean(np.log10(errorSGD)))
         writer.writerow([typeMatrix, np.mean(numpytimes), np.std(numpytimes),
         np.mean(SGDtimes), np.std(SGDtimes), np.mean(np.log10(errorSGD)),np.mean(np.log10(errorSGD)),

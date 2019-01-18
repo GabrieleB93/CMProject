@@ -80,7 +80,7 @@ class steepestGradientDescent():
 
             if self.feval > conf.MaxFeval:
                 self.status = 'stopped'
-                print(self.status)
+                #print(self.status)
                 break
 
             alpha = self.function.stepsize()
@@ -88,7 +88,7 @@ class steepestGradientDescent():
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
-                print(self.status)
+                #print(self.status)
                 break
 
             self.x = self.x - alpha * self.g
@@ -97,7 +97,7 @@ class steepestGradientDescent():
 
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
-                print(self.status)
+                #print(self.status)
                 break
 
             self.ng = LA.norm(self.g)

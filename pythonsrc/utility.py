@@ -115,8 +115,8 @@ def savePlot(type, num, fig):
         os.makedirs(directory)
     fig.savefig(directory + file)
 
-def fromCSVToLatexTable():
-    df = pd.read_csv("CSVresult/MAtrixStat.csv")
+def fromCSVToLatexTable(nome1, nome2):
+    df = pd.read_csv("CSVresult/"+nome1+".csv")
     a = df.values
     a = a[:, 1:]
-    np.savetxt("CSVresult/mydata.csv", a, delimiter=' & ', fmt='%2.2e', newline=' \\\\\n')
+    np.savetxt("CSVresult/Latextable"+nome2+".csv", a, delimiter=' & ', fmt='%2.2e', newline=' \\\\\n')

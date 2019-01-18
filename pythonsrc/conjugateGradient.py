@@ -11,11 +11,10 @@ class conjugateGradient():
         self.feval = 1
         self.x = x if x is not None else self.function.init_x()
         self.v, self.g = function.calculate(self.x)
-        self.ng = LA.norm(self.g)
         self.pOld = -1
         self.p = -self.g
         self.B = 0
-        self.gTg = np.matmul(self.g.T, self.g)
+        self.ng = np.matmul(self.g.T, self.g)
         # Absolute error or relative error?
         if conf.eps < 0:
             self.ng0 = - self.ng
@@ -31,7 +30,7 @@ class conjugateGradient():
             if self.verbose:
                 self.print()
             # Norm of the gradient lower or equal of the epsilon
-            if self.ng <= conf.eps * self.ng0:
+            if np.sqrt(self.ng) <= conf.eps * self.ng0:
                 self.status = 'optimal'
                 return self.historyNorm, self.historyValue
 
@@ -52,15 +51,15 @@ class conjugateGradient():
                 # break
             
 
-            self.oldgTg  = self.gTg
+            self.oldgTg  = self.ng
             ###########
             lastx = self.x
             self.x = self.x + alpha * self.p
             ###########
             self.v, self.g = self.function.calculate(self.x)
             self.feval = self.feval + 1
-            self.gTg = np.matmul(self.g.T, self.g)
-            self.B = self.gTg/self.oldgTg
+            self.ng = np.matmul(self.g.T, self.g)
+            self.B = self.ng/self.oldgTg
             self.pOld = self.p
             self.p = -self.g + ((self.pOld)*self.B)
 
@@ -69,15 +68,13 @@ class conjugateGradient():
                 return self.historyNorm, self.historyValue
                 # break
 
-            self.ng = LA.norm(self.g)
-
     def print(self):
         print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f"%( self.feval, self.v, self.ng))
 
     def ConjugateGradientTIME(self):
         while True:
             # Norm of the gradient lower or equal of the epsilon
-            if self.ng <= conf.eps * self.ng0:
+            if np.sqrt(self.ng) <= conf.eps * self.ng0:
                 self.status = 'optimal'
                 return np.asscalar(self.ng), np.asscalar(self.v)
 
@@ -96,19 +93,18 @@ class conjugateGradient():
                 break
             
 
-            self.oldgTg  = self.gTg
+            self.oldgTg  = self.ng
             lastx = self.x
             self.x = self.x + alpha * self.p
             self.v, self.g = self.function.calculate(self.x)
             self.feval = self.feval + 1
-            self.gTg = np.matmul(self.g.T, self.g)
-            self.B = self.gTg/self.oldgTg
+            self.ng = np.matmul(self.g.T, self.g)
+            self.B = self.ng /self.oldgTg
             self.pOld = self.p
             self.p = -self.g + ((self.pOld)*self.B)
 
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
                 break
-            self.ng = LA.norm(self.g)
 
         return np.asscalar(self.ng), np.asscalar(self.v)

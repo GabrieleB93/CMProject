@@ -9,7 +9,7 @@ espereiments = 100
 numberOfMatrix = 10
 typeMatrix = "A"
 typeMatrixNum = 64
-maxType = 7
+maxType = 8
 
 
 def main():
