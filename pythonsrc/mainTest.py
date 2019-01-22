@@ -17,19 +17,10 @@ def main():
 
     for i in range(1, maxType + 1):
 
-        # errorsSGD = []
         relerrorsSGD = []
         gradientsSGD = []
-        # errorsCG = []
         relerrorsCG = []
         gradientsCG = []
-
-        # AVGerrorsSGD = []
-        AVGrelerrorsSGD = []
-        AVGgradientsSGD = []
-        # AVGerrorsCG = []
-        AVGrelerrorsCG = []
-        AVGgradientsCG = []
 
         type = (chr(typeMatrixNum + i))
 
@@ -62,30 +53,14 @@ def main():
 
             size2 = normsCG.size
             normvec = np.ones(size2) * norm
-            # errorsCG.insert(j - 1, abs(normsCG - normvec))
             relerrorsCG.insert(j - 1, abs(normsCG - normvec) / abs(normvec))
 
-            # for z in range(size1):
-            #     if errorsSGD[j - 1][z] == float("-inf"):
-            #         errorsSGD[j - 1][z] = -16
-            # for t in range(size2):
-            #     if errorsCG[j - 1][t] == float("-inf"):
-            #         errorsCG[j - 1][t] = -16
+        # printPlot(None, relerrorsSGD, gradientsSGD, None, relerrorsCG, gradientsCG, A, type, str(i))
+        printPlot2(relerrorsSGD, gradientsSGD, relerrorsCG, gradientsCG, A, type, str(i))
 
-            # printPlot(None, relerrorsSGD[j-1], gradientsSGD[j-1], None, relerrorsCG[j-1], gradientsCG[j-1], A, type,str(j))
-
-        printPlot(None, relerrorsSGD, gradientsSGD, None, relerrorsCG, gradientsCG, A, type, str(i))
-
-        # Plot della media
-        # AVGerrorsSGD.insert(0,[np.mean(arr) for arr in errorsSGD])
-        # AVGrelerrorsSGD.insert(0,[np.mean(arr1) for arr1 in relerrorsSGD])
-        # AVGgradientsSGD.insert(0,[np.mean(arr2) for arr2 in gradientsSGD])
-        # AVGerrorsCG.insert(0,[np.mean(arr3) for arr3 in errorsCG])
-        # AVGrelerrorsCG.insert(0,[np.mean(arr4) for arr4 in relerrorsCG])
-        # AVGgradientsCG.insert(0,[np.mean(arr5) for arr5 in gradientsCG])
-        #
-        # printPlot(None, AVGrelerrorsSGD, AVGgradientsSGD, None, AVGrelerrorsCG, AVGgradientsCG, A, type,str(0))
-
+def geo_mean(iterable):
+    a = np.array(iterable)
+    return a.prod() ** (1.0 / len(a))
 
 if __name__ == "__main__":
     main()
