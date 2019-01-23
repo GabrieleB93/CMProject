@@ -39,19 +39,13 @@ def density(type):
     if type == 'A':
         return 1
     elif type == 'B':
-        return 1
+        return 0.5
     elif type == 'C':
-        return 1
+        return 0.25
     elif type == 'D':
-        return 0.5
+        return 0.01
     elif type == 'E':
-        return 0.5
-    elif type == 'F':
-        return 0.25
-    elif type == 'G':
-        return 0.25
-    elif type == 'H':
-        return '0.01'
+        return 1
 
 
 def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=None, relerrorsCG=None, gradientsCG=None,
