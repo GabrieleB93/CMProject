@@ -15,8 +15,6 @@ function CreateMatrices(type)
     m = 1000;
     n = 50;
     n1 = 5;
-    maxtry = 1;
-    isIll = true;
     for i = 1:num
 
         range = randi(100);
@@ -30,30 +28,17 @@ function CreateMatrices(type)
                 r = sparseR(m,n1,0.25,range);
             case 'D'
                 r = sparseR(m,n1,0.01,range);
-            case 'E'
-                isIll = false;
-                while((isIll==false) && (maxtry<=n1))
-                    r1 = hilb(1000);
-                    dr = decomposition(r1);
-                    tf = isIllConditioned(dr);
-                    if(tf==1)
-                        r = r1;
-                        isIll = true;
-                    else
-                        maxtry = maxtry + 1;
-                    end
-                end
+            case 'G'
+                r = golub(1000);
+                disp(cond(r));
             otherwise
                 disp('Inserire lettera valida');
                 return
         end
 
-        if(isIll==false)
-            disp('Errore, matrice non mal condizionata')
-        else
-            filename = strcat(directory,'/','matrix',type,num2str(i),'.txt');
-            dlmwrite(filename,r,'delimiter','\t','precision',3)
-        end
+        filename = strcat(directory,'/','matrix',type,num2str(i),'.txt');
+        dlmwrite(filename,r,'delimiter','\t','precision',3)
+
     end
 
     function [r]  = sparseR(m,n,density,range)

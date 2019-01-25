@@ -5,11 +5,11 @@ from numpy import linalg as LA
 import normFunction as nf
 from utility import *
 
-espereiments = 100
+
 numberOfMatrix = 10
 typeMatrix = "A"
 typeMatrixNum = 64
-maxType = 8
+maxType = 5
 
 
 def main():
@@ -44,8 +44,7 @@ def main():
             size1 = normsSGD.size
 
             normvec = np.ones(size1) * norm
-            # errorsSGD.insert(j - 1, abs(normsSGD - normvec))
-            relerrorsSGD.insert(j - 1, abs(normsSGD - normvec) / abs(normvec))
+            relerrorsSGD.insert(j - 1, (abs(normsSGD - normvec) / abs(normvec)))
 
             # Norm and errors CG
             normsCG = np.array(normsCG)
@@ -56,11 +55,7 @@ def main():
             relerrorsCG.insert(j - 1, abs(normsCG - normvec) / abs(normvec))
 
         # printPlot(None, relerrorsSGD, gradientsSGD, None, relerrorsCG, gradientsCG, A, type, str(i))
+
         printPlot2(relerrorsSGD, gradientsSGD, relerrorsCG, gradientsCG, A, type, str(i))
-
-def geo_mean(iterable):
-    a = np.array(iterable)
-    return a.prod() ** (1.0 / len(a))
-
 if __name__ == "__main__":
     main()
