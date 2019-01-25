@@ -8,7 +8,7 @@ import csv
 
 espereiments = 100
 numberOfMatrix = 10
-matrixes = ["A", "B","C", "D", "E", "F", "G", "H"]
+matrixes = ["A", "B","C", "D", "E"]
 
 def main():
     writer = csv.writer(open("CSVresult/MAtrixStat.csv", 'w'))

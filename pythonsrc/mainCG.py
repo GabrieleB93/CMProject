@@ -1,3 +1,4 @@
+#!../venv/bin/python3
 import normFunction as nf
 import conjugateGradient as CG
 import numpy as np
