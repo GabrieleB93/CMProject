@@ -50,7 +50,6 @@ def density(type):
 
 def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=None, relerrorsCG=None, gradientsCG=None,
               A=None, type=None, num=None, ):
-
     yLabel2 = 'Relative Error'
     yLabel3 = 'Norms Gradient'
     xLabel1 = 'Iterations'
@@ -107,7 +106,6 @@ def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=Non
 
 def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradientsCG=None,
                A=None, type=None, num=None, ):
-
     font = {'family': 'DejaVu Sans',
             'weight': 'light',
             'size': 18}
@@ -140,21 +138,21 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
     for i in range(len(relerrorsCG)):
         relerrorsCG[i] = [max(err, 1e-20) for err in relerrorsCG[i]]
 
-    relSGD = (pd.DataFrame((relerrorsSGD))).melt()
-    relCG = (pd.DataFrame((relerrorsCG))).melt()
+    relSGD = (pd.DataFrame((pair_vector(relerrorsSGD)))).melt()
+    relCG = (pd.DataFrame((pair_vector(relerrorsCG)))).melt()
 
-    gradSGD = (pd.DataFrame((gradientsSGD))).melt()
-    gradCG = (pd.DataFrame((gradientsCG))).melt()
+    gradSGD = (pd.DataFrame((pair_vector(gradientsSGD)))).melt()
+    gradCG = (pd.DataFrame((pair_vector(gradientsCG)))).melt()
 
     # Plot relative errors
-    sns.lineplot(x="variable", y="value",  data=relSGD, estimator=geo_mean, ax=relErrPlot)
+    sns.lineplot(x="variable", y="value", data=relSGD, estimator=geo_mean, ax=relErrPlot)
     sns.lineplot(x="variable", y="value", data=relCG, estimator=geo_mean, ax=relErrPlot)
-    plt.ylim(10e-16, 10e0)
+    # plt.ylim(10e-16, 10e0)
 
     # Plot norms of gradient
     sns.lineplot(x="variable", y="value", data=gradSGD, estimator=geo_mean, ax=gradPlot)
     sns.lineplot(x="variable", y="value", data=gradCG, estimator=geo_mean, ax=gradPlot)
-    plt.ylim(10e-10, 10e10)
+    # plt.ylim(10e-10, 10e10)
 
     # Set label x and y
     relErrPlot.set(xlabel=xLabel1)
@@ -191,3 +189,12 @@ def fromCSVToLatexTable(nome1, nome2):
 def geo_mean(iterable):
     a = np.array(iterable)
     return a.prod() ** (1.0 / len(a))
+
+
+def pair_vector(vector_list):
+    maxlen = len(max(vector_list, key=len))
+    for i in range(len(vector_list)):
+        lastEl = len(vector_list[i]) - 1
+        tmpArray = np.full((maxlen - lastEl - 1, 1), vector_list[i][lastEl])
+        vector_list[i] = np.array(np.concatenate((vector_list[i], tmpArray), axis=None))
+    return vector_list
