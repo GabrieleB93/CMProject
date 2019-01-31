@@ -79,6 +79,6 @@ that will generates a comparative image for each type of matrix. We can also pri
 
 At least, we can choose how many matrices (and how many type) we can read and consequently also how many functions we want to evaluate in the same plot trough:
 ```
-9 numberOfMatrix = 10
+9  numberOfMatrix = 10
 10 typeMatrix = ['A', 'B', 'C', 'D', 'E']
 ```
