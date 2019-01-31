@@ -9,7 +9,7 @@ import time
 # The class conjugateGradient needs a function object whith this three methods: 
 # 1) init_x() -> return the starting point (could be usefull for some fucntions)
 # 2) calculate(ponitX) -> returns f(X) and gradient in X 
-# 3) exactSearchDirection(direction) -> return a point that satisfy at least the Armijo-Wolf condition
+# 3) exactSearchGeneralDirection(direction) -> return a point that satisfy at least the Armijo-Wolf condition
 #  
 class conjugateGradient():
     # init function
@@ -61,7 +61,7 @@ class conjugateGradient():
             # calculate step along direction
             # -direction because model calculate the derivative of 
             # phi' = f'(x-aplha*d)
-            alpha = self.function.exactSearchDirection(-self.p)
+            alpha = self.function.exactSearchGeneralDirection(-self.p)
 
             # if the stop is too short we stop
             if alpha <= conf.mina:
@@ -103,7 +103,7 @@ class conjugateGradient():
             # calculate step along direction
             # -direction because model calculate the derivative of 
             # phi' = f'(x-aplha*d)
-            alpha = self.function.exactSearchDirection(-self.p)
+            alpha = self.function.exactSearchGeneralDirection(-self.p)
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
