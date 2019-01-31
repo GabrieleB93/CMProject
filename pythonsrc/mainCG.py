@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import time
 from utility import *
 
-def main():
+# given a generic matrix 
+def main(A = None):
     A = readMatrix('A',1)
     f = nf.normFunction(A)
 

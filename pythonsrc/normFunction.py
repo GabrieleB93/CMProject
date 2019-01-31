@@ -1,10 +1,15 @@
 import numpy as np
 
-
+#
+# This file implements the norm function
+# which is the objective function that we will opimize
+# with the conjugate gradient and the steepestDescentDirection
+# It has an API as the two algorithm wants
+#
 class normFunction():
     def __init__(self, A):
         self.A = A
-        # Q = A'A
+        # Q = A'A 
         self.Q = np.matmul(np.transpose(A), A)
         self.dim = self.Q.shape[0]
 
@@ -25,7 +30,7 @@ class normFunction():
 
     # funciton that return the step size of the algorithm using exact line search along the 
     # graient direction. It uses the closed formula of the derivative along the direction
-    def stepsize(self):
+    def stepsizeAlongGradientDirection(self):
         # expressed the poly as aalpha^2+b*alpha+c 
         # we will have 
         # a = (d.T*d)(x*Q*d) - (d.T*Q*d)*(x.T*d)  
@@ -49,12 +54,9 @@ class normFunction():
             return roots[1]
         elif roots[1] < 0:
             return roots[0]
-        # non credo succeda mai, perchè vorrebbe dire che ci sono due zeri nella nostra derivata 
-        # lungo quella direzione che è una funzione con due punti stazionari da li in avanti
-        # quindi \_/^\ va a meno infinito ( più perchè cerchiamo il massimo)
         return np.min([roots])
 
-    def conjugateGradientStepsize(self, d):
+    def exactSearchGeneralDirection(self, d):
         # expressed the poly as aalpha^2+b*alpha+c 
         # we will have 
         # a = (d.T*d)(x*Q*d) - (d.T*Q*d)*(x.T*d)  

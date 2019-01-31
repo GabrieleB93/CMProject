@@ -2,7 +2,13 @@ import conf
 import numpy as np
 from numpy import linalg as LA
 
-
+#
+# This file implements the optimization of a function with the gradient method. 
+# The class steepestGradientDescent needs a function object whith this three methods: 
+# 1) init_x() -> return the starting point (could be usefull for some fucntions)
+# 2) calculate(ponitX) -> returns f(X) and gradient in X 
+# 3) stepsizeAlongGradientDirection(direction) -> return a point that satisfy at least the Armijo-Wolf condition along the gradient direction
+#  
 class steepestGradientDescent():
     def __init__(self, function, x=None, verbose = True):
         self.verbose = verbose
@@ -44,7 +50,7 @@ class steepestGradientDescent():
                 return self.historyNorm, self.historyValue
 
             # calculate step along direction
-            alpha = self.function.stepsize()
+            alpha = self.function.stepsizeAlongGradientDirection()
 
             # step too short
             if alpha <= conf.mina:
@@ -84,7 +90,7 @@ class steepestGradientDescent():
                 #print(self.status)
                 break
 
-            alpha = self.function.stepsize()
+            alpha = self.function.stepsizeAlongGradientDirection()
 
             # step too short
             if alpha <= conf.mina:
