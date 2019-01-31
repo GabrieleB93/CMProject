@@ -12,7 +12,7 @@ The project is structured in the following way:
 * Plot = folder containing the plots generated from the python's script 
 * pythonsrc = contain a folder with the result in CSV format and the python script of tests and computing
 
-## Prerequisites
+### Prerequisites
 The entire project was made with two language: python e matlab. 
 
 The last one is not mandatory, indeed, in the appropriate folder there are already present a discrete number of matrices. It will instead be mandatory if there is a need to create new matrices.
