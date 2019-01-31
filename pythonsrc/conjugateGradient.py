@@ -14,10 +14,10 @@ class conjugateGradient():
         self.pOld = -1
         self.p = -self.g
         self.B = 0
-        self.ng = np.matmul(self.g.T, self.g)
+        self.gTg = np.matmul(self.g.T, self.g)
         # Absolute error or relative error?
         if conf.eps < 0:
-            self.ng0 = - self.ng
+            self.ng0 = - np.sqrt(self.gTg)
         else:
             self.ng0 = 1
 
@@ -25,12 +25,12 @@ class conjugateGradient():
         self.historyNorm = []
         self.historyValue = []
         while True:
-            self.historyNorm.append(np.asscalar(self.ng))
+            self.historyNorm.append(np.asscalar(np.sqrt(self.gTg)))
             self.historyValue.append(np.asscalar(self.v))
             if self.verbose:
                 self.print()
             # Norm of the gradient lower or equal of the epsilon
-            if np.sqrt(self.ng) <= conf.eps * self.ng0:
+            if np.sqrt(self.gTg) <= conf.eps * self.ng0:
                 self.status = 'optimal'
                 return self.historyNorm, self.historyValue
 
@@ -51,15 +51,15 @@ class conjugateGradient():
                 # break
             
 
-            self.oldgTg  = self.ng
+            self.oldgTg  = self.gTg
             ###########
             lastx = self.x
             self.x = self.x + alpha * self.p
             ###########
             self.v, self.g = self.function.calculate(self.x)
             self.feval = self.feval + 1
-            self.ng = np.matmul(self.g.T, self.g)
-            self.B = self.ng/self.oldgTg
+            self.gTg = np.matmul(self.g.T, self.g)
+            self.B = self.gTg/self.oldgTg
             self.pOld = self.p
             self.p = -self.g + ((self.pOld)*self.B)
 
@@ -69,14 +69,14 @@ class conjugateGradient():
                 # break
 
     def print(self):
-        print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f"%( self.feval, self.v, self.ng))
+        print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f"%( self.feval, self.v, np.sqrt(self.gTg)))
 
     def ConjugateGradientTIME(self):
         while True:
             # Norm of the gradient lower or equal of the epsilon
-            if np.sqrt(self.ng) <= conf.eps * self.ng0:
+            if np.sqrt(self.gTg) <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                return np.asscalar(self.ng), np.asscalar(self.v)
+                return np.asscalar(self.gTg), np.asscalar(self.v)
 
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
@@ -93,13 +93,13 @@ class conjugateGradient():
                 break
             
 
-            self.oldgTg  = self.ng
+            self.oldgTg  = self.gTg
             lastx = self.x
             self.x = self.x + alpha * self.p
             self.v, self.g = self.function.calculate(self.x)
             self.feval = self.feval + 1
-            self.ng = np.matmul(self.g.T, self.g)
-            self.B = self.ng /self.oldgTg
+            self.gTg = np.matmul(self.g.T, self.g)
+            self.B = self.gTg /self.oldgTg
             self.pOld = self.p
             self.p = -self.g + ((self.pOld)*self.B)
 
@@ -107,4 +107,4 @@ class conjugateGradient():
                 self.status = 'unbounded'
                 break
 
-        return np.asscalar(self.ng), np.asscalar(self.v)
+        return np.asscalar(self.gTg), np.asscalar(self.v)
