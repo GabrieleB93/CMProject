@@ -7,22 +7,19 @@ from utility import *
 
 
 numberOfMatrix = 10
-typeMatrix = "A"
-typeMatrixNum = 64
-maxType = 5
-
+typeMatrix = ['A', 'B', 'C', 'D', 'E']
 
 def main():
     global A
 
-    for i in range(1, maxType + 1):
+    for i in range(0, len(typeMatrix)):
 
         relerrorsSGD = []
         gradientsSGD = []
         relerrorsCG = []
         gradientsCG = []
 
-        type = (chr(typeMatrixNum + i))
+        type = typeMatrix[i]
 
         for j in range(1, numberOfMatrix + 1):
             A = readMatrix(type, j)
@@ -56,6 +53,6 @@ def main():
 
         # printPlot(None, relerrorsSGD, gradientsSGD, None, relerrorsCG, gradientsCG, A, type, str(i))
 
-        printPlot2(relerrorsSGD, gradientsSGD, relerrorsCG, gradientsCG, A, type, str(i))
+        printPlot2(relerrorsSGD, gradientsSGD, relerrorsCG, gradientsCG, A, type, str(i+1))
 if __name__ == "__main__":
     main()

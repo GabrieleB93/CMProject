@@ -7,6 +7,7 @@ class steepestGradientDescent():
     def __init__(self, function, x=None, verbose = True):
         self.verbose = verbose
         self.function = function
+        self.status = ''
         self.feval = 1
         self.x = x if x is not None else self.function.init_x()
 
@@ -30,17 +31,17 @@ class steepestGradientDescent():
             # Norm of the gradient lower or equal of the epsilon
             if self.ng <= conf.eps * self.ng0:
                 self.status = 'optimal'
-                print(self.status)
+                if self.verbose:
+                    self.print()
                 return self.historyNorm, self.historyValue
 
 
             # Man number of iteration?
             if self.feval > conf.MaxFeval:
                 self.status = 'stopped'
-                print(self.status)
+                if self.verbose:
+                    self.print()
                 return self.historyNorm, self.historyValue
-                #break
-
 
             # calculate step along direction
             alpha = self.function.stepsize()
@@ -48,9 +49,9 @@ class steepestGradientDescent():
             # step too short
             if alpha <= conf.mina:
                 self.status = 'error'
-                print(self.status)
+                if self.verbose:
+                    self.print()
                 return self.historyNorm, self.historyValue
-                # break
 
             lastx = self.x
             self.x = self.x - alpha * self.g
@@ -59,16 +60,16 @@ class steepestGradientDescent():
 
             if self.v <= conf.MInf:
                 self.status = 'unbounded'
-                print(self.status)
+                if self.verbose:
+                    self.print()
                 return self.historyNorm, self.historyValue
-                # break
 
             self.ng = LA.norm(self.g)
 
         print('\n x = ' + str(self.x) + '\nvalue = %0.4f' % self.v)
 
     def print(self):
-        print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f" % (self.feval, self.v, self.ng))
+        print("Iterations number %d, -f(x) = %0.4f, gradientNorm = %f - " % (self.feval, self.v, self.ng) + self.status)
 
     # same function as the previus one but it returns also the time and
     # we avoid print and other operation which slow down the algorithm
