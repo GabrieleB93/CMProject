@@ -164,7 +164,7 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
     relErrPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
     gradPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
 
-    plt.show()
+    #plt.show()
     savePlot(type, num, fig)
 
 
