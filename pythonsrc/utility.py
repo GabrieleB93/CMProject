@@ -35,6 +35,7 @@ def normSDG(A):
     return SGDoptimizer.steepestGradientDescentTIME()
 
 
+# map the type of matrix with the dansity
 def density(type):
     if type == 'A':
         return 1
@@ -48,7 +49,8 @@ def density(type):
         return 1
 
 
-def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=None, relerrorsCG=None, gradientsCG=None,
+# (old) method to plot different errors and gradients with different lines
+def printPlot(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradientsCG=None,
               A=None, type=None, num=None, ):
     yLabel2 = 'Relative Error'
     yLabel3 = 'Norms Gradient'
@@ -104,6 +106,7 @@ def printPlot(errorsSGD=None, relerrorsSGD=None, gradientsSGD=None, errorsCG=Non
     savePlot(type, num, fig)
 
 
+# current method to plot errors and gradients
 def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradientsCG=None,
                A=None, type=None, num=None, ):
     font = {'family': 'DejaVu Sans',
@@ -111,7 +114,6 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
             'size': 18}
 
     matplotlib.rc('font', **font)
-    # matplotlib.rcParams.update({'font.size': 15})
     plt.rcParams.update({'font.size': 18})
     # Strings
 
@@ -133,26 +135,31 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
         'Type ' + type + '     Density =  ' + str(density(type)) + '    M = ' + str(
             m) + ' N = ' + str(n))
 
-    for i in range(len(relerrorsSGD)):
-        relerrorsSGD[i] = [max(err, 1e-20) for err in relerrorsSGD[i]]
-    for i in range(len(relerrorsCG)):
-        relerrorsCG[i] = [max(err, 1e-20) for err in relerrorsCG[i]]
+    if gradientsCG is not None and relerrorsCG is not None:
+        for i in range(len(relerrorsCG)):
+            relerrorsCG[i] = [max(err, 1e-20) for err in relerrorsCG[i]]
 
-    relSGD = (pd.DataFrame((pair_vector(relerrorsSGD)))).melt()
-    relCG = (pd.DataFrame((pair_vector(relerrorsCG)))).melt()
+        relCG = (pd.DataFrame((pair_vector(relerrorsCG)))).melt()
+        gradCG = (pd.DataFrame((pair_vector(gradientsCG)))).melt()
 
-    gradSGD = (pd.DataFrame((pair_vector(gradientsSGD)))).melt()
-    gradCG = (pd.DataFrame((pair_vector(gradientsCG)))).melt()
+        # Plot relative errors and gradient of CG
+        sns.lineplot(x="variable", y="value", data=relCG, estimator=geo_mean, ax=relErrPlot)
+        sns.lineplot(x="variable", y="value", data=gradCG, estimator=geo_mean, ax=gradPlot)
+    else:
+        print("Relative errors and Norms of Gradient must be both None")
 
-    # Plot relative errors
-    sns.lineplot(x="variable", y="value", data=relSGD, estimator=geo_mean, ax=relErrPlot)
-    sns.lineplot(x="variable", y="value", data=relCG, estimator=geo_mean, ax=relErrPlot)
-    # plt.ylim(10e-16, 10e0)
+    if gradientsSGD is not None and relerrorsSGD is not None:
+        for i in range(len(relerrorsSGD)):
+            relerrorsSGD[i] = [max(err, 1e-20) for err in relerrorsSGD[i]]
 
-    # Plot norms of gradient
-    sns.lineplot(x="variable", y="value", data=gradSGD, estimator=geo_mean, ax=gradPlot)
-    sns.lineplot(x="variable", y="value", data=gradCG, estimator=geo_mean, ax=gradPlot)
-    # plt.ylim(10e-10, 10e10)
+        relSGD = (pd.DataFrame((pair_vector(relerrorsSGD)))).melt()
+        gradSGD = (pd.DataFrame((pair_vector(gradientsSGD)))).melt()
+
+        # Plot relative errors and gradient of SGD
+        sns.lineplot(x="variable", y="value", data=relSGD, estimator=geo_mean, ax=relErrPlot)
+        sns.lineplot(x="variable", y="value", data=gradSGD, estimator=geo_mean, ax=gradPlot)
+    else:
+        print("Relative errors and Norms of Gradient must be both None")
 
     # Set label x and y
     relErrPlot.set(xlabel=xLabel1)
@@ -161,10 +168,14 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
     gradPlot.set(ylabel=yLabel3)
 
     # Set legend of subplots
-    relErrPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
-    gradPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
+    if gradientsSGD is None and relerrorsSGD is None:
+        relErrPlot.legend(('Conjugate Gradient', 'Steepest Descent Gradient'), loc='upper right')
+        gradPlot.legend(('Conjugate Gradient', 'Steepest Descent Gradient'), loc='upper right')
+    else:
+        relErrPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
+        gradPlot.legend(('Steepest Descent Gradient', 'Conjugate Gradient'), loc='upper right')
 
-    #plt.show()
+    plt.show()
     savePlot(type, num, fig)
 
 
