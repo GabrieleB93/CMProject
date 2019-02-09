@@ -180,11 +180,9 @@ def printPlot2(relerrorsSGD=None, gradientsSGD=None, relerrorsCG=None, gradients
 
 
 def savePlot(type, num, fig):
+
     directory = "../Plot/"
-    if num == "0":
-        file = "AVG" + type + num + ".png"
-    else:
-        file = type + num + ".png"
+    file = type + num + ".png"
     if not os.path.exists(directory):
         os.makedirs(directory)
     fig.savefig(directory + file)
