@@ -21,7 +21,7 @@ def main(A = None):
     # Norm numpy
     norm = LA.norm(A, ord=2) ** 2
 
-    # Norm and errors SGD
+    # Norm and errors CG
     normsCG = np.array(normsCG)
     gradientsCG.insert(0, np.array(gradientCG))
     size1 = normsCG.size
