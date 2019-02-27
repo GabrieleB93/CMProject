@@ -86,7 +86,8 @@ We can see now some plot of the accuracy compared with the numpy.linalg.norm() f
 <div>
   <img src="Plot/A1.png" />
 </div>
-#### Ill conditioned matrix k(A) = 10^18    
+
+Ill conditioned matrix k(A) = 10^18    
 <div>
    <img src="Plot/E5.png" />
     </div>
