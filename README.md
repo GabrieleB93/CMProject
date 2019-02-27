@@ -1,6 +1,7 @@
 # CMProject
-Project for the "computational mathematics" course fot the master in computer science
-
+Project for the "computational mathematics" course fot the master in computer science.
+In this project we implemented the 2-norm matrix calculus as an uncostrained optimization problem with the "Conjugate Gradient" and "Steppeste Descent Direction" algorithms.
+All the math can be found on the <a href = "/Report.pdf">report</a>
 ## Getting started
 
 Let's first take a look at the project organization and its requirements.
@@ -24,9 +25,6 @@ As regard the first one, python, is used in its version 3.6. For a correct execu
 * matplotlib
 * seaborn
 * pandas
-* sympy
-* ipython
-* jupyter
 
 ## Running the tests
 
