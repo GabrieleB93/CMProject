@@ -80,3 +80,11 @@ At least, we can choose how many matrices (and how many type) we can read and co
 9  numberOfMatrix = 10
 10 typeMatrix = ['A', 'B', 'C', 'D', 'E']
 ```
+
+### Results
+We can see now some plot of the accuracy compared with the numpy.linalg.norm() function.
+<div>
+  <img src="Plot/A1.png" />
+   <img src="Plot/E5.png" />
+ </div>
+
